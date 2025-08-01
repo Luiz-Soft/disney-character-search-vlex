@@ -17,7 +17,7 @@
           :key="character._id"
           :name="character.name"
           :image-url="character.imageUrl"
-          @click="goToDetails(character._id)"
+          @click="(e) => onCardClick(e, character._id)"
         />
       </div>
       <Pagination />
@@ -32,6 +32,7 @@ import LoadingSpinner from '@/components/LoadingSpinner.vue'
 import { useCharacterStore } from '@/stores/characterStore'
 import { storeToRefs } from 'pinia'
 import { useRouter, type Router } from 'vue-router'
+import confetti from 'canvas-confetti'
 
 const characterStore = useCharacterStore()
 const {
@@ -42,7 +43,19 @@ const {
 
 const router: Router = useRouter()
 
-const goToDetails = (id: number): void => {
+const onCardClick = (event: MouseEvent, id: number): void => {
+  const target = event.currentTarget as HTMLElement
+  const rect = target.getBoundingClientRect()
+
+  const x = (rect.left + rect.width / 2) / window.innerWidth
+  const y = (rect.top + rect.height / 2) / window.innerHeight
+
+  confetti({
+    particleCount: 100,
+    spread: 70,
+    origin: { x, y },
+  })
+
   router.push({ name: 'CharacterDetails', params: { id } })
 }
 </script>
