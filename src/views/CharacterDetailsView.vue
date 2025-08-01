@@ -71,7 +71,7 @@
   </div>
 
   <div v-else class="character-details__loading">
-    {{ $t('characterDetails.loading') }}
+    <LoadingSpinner v-if="loading" />
   </div>
 </template>
 
@@ -79,22 +79,27 @@
 import { ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { type Character, getCharacterById } from '@/services/charactersService'
+import LoadingSpinner from '@/components/LoadingSpinner.vue'
 
 const route = useRoute()
 const character = ref<Character | null>(null)
 const imageError = ref(false)
 const hasError = ref(false)
+const loading = ref(true)
 
 const fetchCharacter = async () => {
   const id = String(route.params.id)
   hasError.value = false
   character.value = null
+  loading.value = true
 
   try {
     character.value = await getCharacterById(id)
   } catch (err) {
     console.error('Error loading character:', err)
     hasError.value = true
+  } finally {
+    loading.value = false
   }
 }
 
