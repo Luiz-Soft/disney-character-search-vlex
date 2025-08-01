@@ -70,8 +70,8 @@
     </div>
   </div>
 
-  <div v-else class="character-details__loading">
-    <LoadingSpinner v-if="loading" />
+  <div v-if="loading" class="character-details__loading">
+    <LoadingSpinner  />
   </div>
 </template>
 
