@@ -12,11 +12,13 @@ export interface Character {
 }
 
 export interface CharactersResponse {
+  info: {
+    count: number
+    totalPages: number
+    previousPage: string | null
+    nextPage: string | null
+  }
   data: Character[]
-  count: number
-  totalPages: number
-  previousPage: string | null
-  nextPage: string | null
 }
 
 export const getCharacters = async (page: number = 1, pageSize: number = 10): Promise<CharactersResponse> => {
@@ -25,7 +27,7 @@ export const getCharacters = async (page: number = 1, pageSize: number = 10): Pr
   return response.data
 }
 
-export const getCharacterByName = async (name: string): Promise<CharactersResponse> => {
-  const response = await api.get(`/character?name=${name}`)
+export const getCharacterByName = async (name: string, page = 1, pageSize = 9): Promise<CharactersResponse> => {
+  const response = await api.get(`/character?name=${name}&page=${page}&pageSize=${pageSize}`)
   return response.data
 }

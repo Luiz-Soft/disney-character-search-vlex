@@ -5,29 +5,33 @@
     </div>
 
     <div v-else-if="characters.length === 0" class="home__empty">
-      <p> {{ $t('emptyContent') }}</p>
+      <p>{{ $t('emptyContent') }}</p>
     </div>
 
-    <div v-else class="home__grid">
-      <CharacterCard
-        v-for="character in characters"
-        :key="character._id"
-        :name="character.name"
-        :image-url="character.imageUrl"
-      />
+    <div v-else>
+      <div class="home__grid">
+        <CharacterCard
+          v-for="character in characters"
+          :key="character._id"
+          :name="character.name"
+          :image-url="character.imageUrl"
+        />
+      </div>
+      <Pagination />
     </div>
   </div>
 </template>
 
-
-<script lang="ts" setup>
+<script setup lang="ts">
 import CharacterCard from '@/components/CharacterCard.vue'
+import Pagination from '@/components/Pagination.vue'
 import { useCharacterStore } from '@/stores/characterStore'
 import { storeToRefs } from 'pinia'
 
 const characterStore = useCharacterStore()
 const { results: characters, loading } = storeToRefs(characterStore)
 </script>
+
 
 
 <style lang="scss" scoped>
