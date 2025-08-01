@@ -1,44 +1,44 @@
 import { defineStore } from 'pinia'
-import { ref } from 'vue'
+import { ref, type Ref } from 'vue'
 import {
   getCharacters,
   getCharacterByName,
   getCharacterById,
   type Character,
+  type CharactersResponse,
 } from '@/services/charactersService'
 
 export const useCharacterStore = defineStore('character', () => {
-  const search = ref('')
-  const loading = ref(false)
-  const isError = ref(false)
-  const results = ref<Character[]>([])
-  const page = ref(1)
-  const totalPages = ref(1)
-  const itemsPerPage = ref(9)
+  const search: Ref<string> = ref('')
+  const loading: Ref<boolean> = ref(false)
+  const isError: Ref<boolean> = ref(false)
+  const results: Ref<Character[]> = ref([])
+  const page: Ref<number> = ref(1)
+  const totalPages: Ref<number> = ref(1)
+  const itemsPerPage: Ref<number> = ref(9)
 
-  const searchCharacters = async (newPage?: number) => {
-    if (newPage) {
-      page.value = newPage
-    } else {
-      page.value = 1
-    }
+  const searchCharacters = async (newPage?: number): Promise<void> => {
+    page.value = newPage ?? 1
+    const query: string = (search.value || '').trim()
 
-    const query = (search.value || '').trim()
     loading.value = true
     isError.value = false
 
     try {
+      let res: CharactersResponse
+
       if (!query) {
-        const res = await getCharacters(page.value, itemsPerPage.value)
-        results.value = res.data
-        totalPages.value = res.info.totalPages
+        res = await getCharacters(page.value, itemsPerPage.value)
       } else {
-        const res = await getCharacterByName(query, page.value, itemsPerPage.value)
-        results.value = res.data.filter(c =>
+        res = await getCharacterByName(query, page.value, itemsPerPage.value)
+        // Optional: filter client-side for extra control
+        res.data = res.data.filter((c: Character) =>
           c.name.toLowerCase().includes(query.toLowerCase())
         )
-        totalPages.value = res.info.totalPages
       }
+
+      results.value = res.data
+      totalPages.value = res.info.totalPages
     } catch (error) {
       console.error('Error fetching characters:', error)
       isError.value = true
@@ -58,7 +58,7 @@ export const useCharacterStore = defineStore('character', () => {
     }
   }
 
-  const goToPage = async (newPage: number) => {
+  const goToPage = async (newPage: number): Promise<void> => {
     await searchCharacters(newPage)
   }
 
