@@ -31,9 +31,6 @@ export const useCharacterStore = defineStore('character', () => {
         res = await getCharacters(page.value, itemsPerPage.value)
       } else {
         res = await getCharacterByName(query, page.value, itemsPerPage.value)
-        res.data = res.data.filter((c: Character) =>
-          c.name.toLowerCase().includes(query.toLowerCase())
-        )
       }
 
       results.value = res.data
