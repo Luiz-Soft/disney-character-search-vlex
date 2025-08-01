@@ -31,7 +31,6 @@ export const useCharacterStore = defineStore('character', () => {
         res = await getCharacters(page.value, itemsPerPage.value)
       } else {
         res = await getCharacterByName(query, page.value, itemsPerPage.value)
-        // Optional: filter client-side for extra control
         res.data = res.data.filter((c: Character) =>
           c.name.toLowerCase().includes(query.toLowerCase())
         )
@@ -48,13 +47,17 @@ export const useCharacterStore = defineStore('character', () => {
   }
 
   const fetchCharacterById = async (id: string): Promise<Character | null> => {
+    loading.value = true
     isError.value = false
+
     try {
       return await getCharacterById(id)
     } catch (error) {
       console.error('Error fetching character by ID:', error)
       isError.value = true
       return null
+    } finally {
+      loading.value = false
     }
   }
 
