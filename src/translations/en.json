@@ -6,13 +6,13 @@
   "paginationPageInfo": "Page {page} of {totalPages}",
   "paginationNext": "Next ➡",
   "characterDetails": {
-    "films": "Films",
-    "shortFilms": "Short Films",
-    "tvShows": "TV Shows",
-    "videoGames": "Video Games",
-    "parkAttractions": "Park Attractions",
-    "allies": "Allies",
-    "enemies": "Enemies",
+    "films": "🎬 Films",
+    "shortFilms": "🎞️ Short Films",
+    "tvShows": "📺 TV Shows",
+    "videoGames": "🎮 Video Games",
+    "parkAttractions": "🎢 Park Attractions",
+    "allies": "🧑‍🤝‍🧑 Allies",
+    "enemies": "😈 Enemies",
     "loading": "Loading...",
     "errorRetry": "An error occurred, click to try again"
   }
