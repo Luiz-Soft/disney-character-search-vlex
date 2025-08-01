@@ -11,29 +11,26 @@ export const useCharacterStore = defineStore('character', () => {
   const loading = ref(false)
   const results = ref<Character[]>([])
 
-const searchCharacters = async () => {
+  const searchCharacters = async () => {
+    const query = (search.value || '').trim()
+    loading.value = true
 
-  const query = (search.value || '').trim()
-
-  loading.value = true
-
-  try {
-    if (!query) {
-      const res = await getCharacters(1, 9)
-      results.value = res.data
-    } else {
-      const res = await getCharacterByName(query)
-      results.value = res.data.filter(c =>
-        c.name.toLowerCase().includes(query.toLowerCase())
-      )
+    try {
+      if (!query) {
+        const res = await getCharacters(1, 9)
+        results.value = res.data
+      } else {
+        const res = await getCharacterByName(query)
+        results.value = res.data.filter(c =>
+          c.name.toLowerCase().includes(query.toLowerCase())
+        )
+      }
+    } catch (error) {
+      console.error('Error fetching characters:', error)
+    } finally {
+      loading.value = false
     }
-  } catch (error) {
-    console.error('Error fetching characters:', error)
-  } finally {
-    loading.value = false
   }
-}
-
 
   return {
     search,
