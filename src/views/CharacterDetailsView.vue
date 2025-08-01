@@ -71,7 +71,7 @@
   </div>
 
   <div v-else class="character-details__loading">
-    <LoadingSpinner v-if="loading" />
+    <LoadingSpinner v-if="characterStore.loading" />
   </div>
 </template>
 
@@ -79,37 +79,17 @@
 import { ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { useCharacterStore } from '@/stores/characterStore'
-import LoadingSpinner from '@/components/LoadingSpinner.vue'
 import type { Character } from '@/services/charactersService'
 
 const route = useRoute()
 const characterStore = useCharacterStore()
 
 const character = ref<Character | null>(null)
-const imageError = ref(false)
-const hasError = ref(false)
-const loading = ref(true)
 
-const fetchCharacter = async () => {
+onMounted(async () => {
   const id = String(route.params.id)
-  hasError.value = false
-  character.value = null
-  loading.value = true
-
-  try {
-    character.value = await characterStore.fetchCharacterById(id)
-    if (!character.value) {
-      hasError.value = true
-    }
-  } catch (err) {
-    console.error('Error loading character:', err)
-    hasError.value = true
-  } finally {
-    loading.value = false
-  }
-}
-
-onMounted(fetchCharacter)
+  character.value = await characterStore.fetchCharacterById(id)
+})
 </script>
 
 <style lang="scss" scoped>

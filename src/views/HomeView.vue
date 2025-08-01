@@ -2,6 +2,10 @@
   <div class="home">
     <LoadingSpinner v-if="loading" />
 
+    <div v-else-if="isError" class="home__error" @click="characterStore.searchCharacters">
+      <p>{{ $t('characterDetails.errorRetry') }}</p>
+    </div>
+
     <div v-else-if="characters.length === 0" class="home__empty">
       <p>{{ $t('emptyContent') }}</p>
     </div>
@@ -30,7 +34,7 @@ import { storeToRefs } from 'pinia'
 import { useRouter } from 'vue-router'
 
 const characterStore = useCharacterStore()
-const { results: characters, loading } = storeToRefs(characterStore)
+const { results: characters, loading, isError } = storeToRefs(characterStore)
 
 const router = useRouter()
 const goToDetails = (id: number) => {
@@ -49,16 +53,24 @@ const goToDetails = (id: number) => {
     justify-content: center;
   }
 
-  &__empty {
+  &__empty,
+  &__error {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 300px;
     font-size: 1.5rem;
     font-weight: bold;
-    color: #ff69b4;
     font-family: 'Comic Sans MS', 'Baloo 2', cursive;
     text-shadow: 1px 1px #fff;
+  }
+
+  &__empty {
+    color: #ff69b4;
+  }
+
+  &__error {
+    color: #ff4d4d;
   }
 }
 </style>
