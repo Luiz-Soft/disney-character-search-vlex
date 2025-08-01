@@ -76,22 +76,22 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted } from 'vue'
-import { useRoute } from 'vue-router'
+import { ref, onMounted, type Ref } from 'vue'
+import { useRoute, type RouteLocationNormalizedLoaded } from 'vue-router'
 import { useCharacterStore } from '@/stores/characterStore'
 import { storeToRefs } from 'pinia'
 import LoadingSpinner from '@/components/LoadingSpinner.vue'
 import type { Character } from '@/services/charactersService'
 
-const route = useRoute()
+const route: RouteLocationNormalizedLoaded = useRoute()
 const characterStore = useCharacterStore()
 const { isError, loading } = storeToRefs(characterStore)
 
-const character = ref<Character | null>(null)
-const imageError = ref(false)
+const character: Ref<Character | null> = ref(null)
+const imageError: Ref<boolean> = ref(false)
 
-const fetch = async () => {
-  const id = String(route.params.id)
+const fetch = async (): Promise<void> => {
+  const id: string = String(route.params.id)
   character.value = await characterStore.fetchCharacterById(id)
 }
 
