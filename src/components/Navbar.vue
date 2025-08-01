@@ -1,23 +1,31 @@
 <template>
   <header class="header">
     <div class="header__content">
-      <h1 class="header__title">Disney Explorer</h1>
+      <h1 class="header__title">{{ $t('title') }}</h1>
 
       <div class="header__search">
         <input
           v-model="search"
           @input="onSearch"
           type="text"
-          placeholder="Search characters..."
+          :placeholder="$t('searchPlaceholder')"
           class="header__input"
         />
+
+        <select v-model="locale" class="header__lang-selector">
+          <option value="en">EN</option>
+          <option value="es">ES</option>
+          <option value="es">PT</option>
+        </select>
       </div>
     </div>
   </header>
 </template>
 
+
 <script lang="ts" setup>
 import { useCharacterStore } from '@/stores/characterStore'
+import { useI18n } from 'vue-i18n'
 
 const characterStore = useCharacterStore()
 const search = characterStore.search
@@ -25,6 +33,8 @@ const search = characterStore.search
 const onSearch = () => {
   characterStore.searchCharacters()
 }
+
+const { locale } = useI18n() 
 </script>
 
 <style lang="scss" scoped>
@@ -60,9 +70,12 @@ const onSearch = () => {
   }
 
   &__search {
+    display: flex;
+    align-items: center;
     flex: 1 1 auto;
-    max-width: 320px;
+    max-width: 400px;
     margin-top: 1rem;
+    gap: 0.5rem;
 
     @media (min-width: 600px) {
       margin-top: 0;
@@ -71,7 +84,7 @@ const onSearch = () => {
   }
 
   &__input {
-    width: 100%;
+    flex: 1;
     padding: 0.75rem 1.2rem;
     border: none;
     border-radius: 2rem;
@@ -91,6 +104,21 @@ const onSearch = () => {
     &:focus {
       box-shadow: 0 0 0 3px #ff69b4, 0 0 12px rgba(255, 105, 180, 0.7);
       transform: scale(1.02);
+    }
+  }
+
+  &__lang-selector {
+    padding: 0.5rem 1rem;
+    border-radius: 1rem;
+    border: none;
+    font-size: 0.9rem;
+    background-color: #ffeb3b;
+    color: #000;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+
+    &:hover {
+      transform: scale(1.05);
     }
   }
 }
