@@ -11,7 +11,7 @@
     <div v-if="imageError" class="character-details__fallback">🧚</div>
 
     <div class="character-details__section" v-if="character.data.films?.length">
-      <h2>🎬 Films</h2>
+      <h2>{{ $t('characterDetails.films') }}</h2>
       <ul>
         <li v-for="film in character.data.films" :key="film">{{ film }}</li>
       </ul>
@@ -19,7 +19,7 @@
     </div>
 
     <div class="character-details__section" v-if="character.data.shortFilms?.length">
-      <h2>🎞️ Short Films</h2>
+      <h2>{{ $t('characterDetails.shortFilms') }}</h2>
       <ul>
         <li v-for="short in character.data.shortFilms" :key="short">{{ short }}</li>
       </ul>
@@ -27,7 +27,7 @@
     </div>
 
     <div class="character-details__section" v-if="character.data.tvShows?.length">
-      <h2>📺 TV Shows</h2>
+      <h2>{{ $t('characterDetails.tvShows') }}</h2>
       <ul>
         <li v-for="show in character.data.tvShows" :key="show">{{ show }}</li>
       </ul>
@@ -35,7 +35,7 @@
     </div>
 
     <div class="character-details__section" v-if="character.data.videoGames?.length">
-      <h2>🎮 Video Games</h2>
+      <h2>{{ $t('characterDetails.videoGames') }}</h2>
       <ul>
         <li v-for="game in character.data.videoGames" :key="game">{{ game }}</li>
       </ul>
@@ -43,7 +43,7 @@
     </div>
 
     <div class="character-details__section" v-if="character.data.parkAttractions?.length">
-      <h2>🎢 Park Attractions</h2>
+      <h2>{{ $t('characterDetails.parkAttractions') }}</h2>
       <ul>
         <li v-for="attraction in character.data.parkAttractions" :key="attraction">{{ attraction }}</li>
       </ul>
@@ -51,7 +51,7 @@
     </div>
 
     <div class="character-details__section" v-if="character.data.allies?.length">
-      <h2>🧑‍🤝‍🧑 Allies</h2>
+      <h2>{{ $t('characterDetails.allies') }}</h2>
       <ul>
         <li v-for="ally in character.data.allies" :key="ally">{{ ally }}</li>
       </ul>
@@ -59,15 +59,18 @@
     </div>
 
     <div class="character-details__section" v-if="character.data.enemies?.length">
-      <h2>😈 Enemies</h2>
+      <h2>{{ $t('characterDetails.enemies') }}</h2>
       <ul>
         <li v-for="enemy in character.data.enemies" :key="enemy">{{ enemy }}</li>
       </ul>
     </div>
   </div>
 
-  <div v-else class="character-details__loading">Loading...</div>
+  <div v-else class="character-details__loading">
+    {{ $t('characterDetails.loading') }}
+  </div>
 </template>
+
 
 <script lang="ts" setup>
 import { ref, onMounted } from 'vue'
