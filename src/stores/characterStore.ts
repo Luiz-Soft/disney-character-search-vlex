@@ -14,7 +14,7 @@ export const useCharacterStore = defineStore('character', () => {
   const totalPages = ref(1)
   const itemsPerPage = ref(9)
 
-  const searchCharacters = async (newPage: number) => {
+  const searchCharacters = async (newPage?: number) => {
     if (newPage) {
       page.value = newPage
     } else {
