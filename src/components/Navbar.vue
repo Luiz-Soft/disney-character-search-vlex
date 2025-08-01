@@ -1,7 +1,9 @@
 <template>
   <header class="header">
     <div class="header__content">
-      <h1 class="header__title">{{ $t('title') }}</h1>
+      <router-link to="/" class="header__title">
+        {{ $t('title') }}
+      </router-link>
 
       <div class="header__search">
         <input
@@ -15,13 +17,12 @@
         <select v-model="locale" class="header__lang-selector">
           <option value="en">EN</option>
           <option value="es">ES</option>
-          <option value="es">PT</option>
+          <option value="pt">PT</option>
         </select>
       </div>
     </div>
   </header>
 </template>
-
 
 <script lang="ts" setup>
 import { useCharacterStore } from '@/stores/characterStore'
@@ -73,6 +74,7 @@ const { locale } = useI18n()
     color: #ffeb3b;
     text-shadow: 2px 2px 0 #000, 4px 4px 0 #ff69b4;
     margin: 0;
+    text-decoration: none;
   }
 
   &__search {
