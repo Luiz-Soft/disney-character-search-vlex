@@ -19,12 +19,13 @@ export interface CharactersResponse {
   nextPage: string | null
 }
 
-export const getCharacters = async (page: number = 1, limit: number = 10): Promise<CharactersResponse> => {
-  const response = await api.get(`/character?page=${page}&limit=${limit}`)
+export const getCharacters = async (page: number = 1, pageSize: number = 10): Promise<CharactersResponse> => {
+  console.log("we got here")
+  const response = await api.get(`/character?page=${page}&pageSize=${pageSize}`)
   return response.data
 }
 
-export const getCharacterById = async (id: number): Promise<Character> => {
-  const response = await api.get(`/character/${id}`)
+export const getCharacterByName = async (name: string): Promise<Character> => {
+  const response = await api.get(`/character?name=${name}`)
   return response.data
 }

@@ -26,15 +26,21 @@
 <script lang="ts" setup>
 import { useCharacterStore } from '@/stores/characterStore'
 import { useI18n } from 'vue-i18n'
+import { storeToRefs } from 'pinia'
+import { onMounted } from 'vue'
 
 const characterStore = useCharacterStore()
-const search = characterStore.search
+const { search } = storeToRefs(characterStore)
 
 const onSearch = () => {
   characterStore.searchCharacters()
 }
 
-const { locale } = useI18n() 
+onMounted(() => {
+  characterStore.searchCharacters()
+})
+
+const { locale } = useI18n()
 </script>
 
 <style lang="scss" scoped>
