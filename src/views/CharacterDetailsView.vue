@@ -1,5 +1,5 @@
 <template>
-  <div v-if="characterStore.isError" class="character-details__error" @click="fetchCharacter">
+  <div v-if="isError" class="character-details__error" @click="() => fetch()">
     {{ $t('characterDetails.errorRetry') }}
   </div>
 
@@ -71,7 +71,7 @@
   </div>
 
   <div v-else class="character-details__loading">
-    <LoadingSpinner v-if="characterStore.loading" />
+    <LoadingSpinner v-if="loading" />
   </div>
 </template>
 
@@ -79,17 +79,23 @@
 import { ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { useCharacterStore } from '@/stores/characterStore'
+import { storeToRefs } from 'pinia'
+import LoadingSpinner from '@/components/LoadingSpinner.vue'
 import type { Character } from '@/services/charactersService'
 
 const route = useRoute()
 const characterStore = useCharacterStore()
+const { isError, loading } = storeToRefs(characterStore)
 
 const character = ref<Character | null>(null)
+const imageError = ref(false)
 
-onMounted(async () => {
+const fetch = async () => {
   const id = String(route.params.id)
   character.value = await characterStore.fetchCharacterById(id)
-})
+}
+
+onMounted(fetch)
 </script>
 
 <style lang="scss" scoped>
