@@ -22,7 +22,6 @@ export interface CharactersResponse {
 }
 
 export const getCharacters = async (page: number = 1, pageSize: number = 10): Promise<CharactersResponse> => {
-  console.log("we got here")
   const response = await api.get(`/character?page=${page}&pageSize=${pageSize}`)
   return response.data
 }
