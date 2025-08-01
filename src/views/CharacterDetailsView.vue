@@ -1,5 +1,5 @@
 <template>
-  <div v-if="hasError" class="character-details__error" @click="fetchCharacter">
+  <div v-if="characterStore.isError" class="character-details__error" @click="fetchCharacter">
     {{ $t('characterDetails.errorRetry') }}
   </div>
 
@@ -78,10 +78,13 @@
 <script lang="ts" setup>
 import { ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
-import { type Character, getCharacterById } from '@/services/charactersService'
+import { useCharacterStore } from '@/stores/characterStore'
 import LoadingSpinner from '@/components/LoadingSpinner.vue'
+import type { Character } from '@/services/charactersService'
 
 const route = useRoute()
+const characterStore = useCharacterStore()
+
 const character = ref<Character | null>(null)
 const imageError = ref(false)
 const hasError = ref(false)
@@ -94,7 +97,10 @@ const fetchCharacter = async () => {
   loading.value = true
 
   try {
-    character.value = await getCharacterById(id)
+    character.value = await characterStore.fetchCharacterById(id)
+    if (!character.value) {
+      hasError.value = true
+    }
   } catch (err) {
     console.error('Error loading character:', err)
     hasError.value = true

@@ -3,12 +3,14 @@ import { ref } from 'vue'
 import {
   getCharacters,
   getCharacterByName,
-  type Character
+  getCharacterById,
+  type Character,
 } from '@/services/charactersService'
 
 export const useCharacterStore = defineStore('character', () => {
   const search = ref('')
   const loading = ref(false)
+  const isError = ref(false)
   const results = ref<Character[]>([])
   const page = ref(1)
   const totalPages = ref(1)
@@ -23,12 +25,12 @@ export const useCharacterStore = defineStore('character', () => {
 
     const query = (search.value || '').trim()
     loading.value = true
+    isError.value = false
 
     try {
       if (!query) {
         const res = await getCharacters(page.value, itemsPerPage.value)
         results.value = res.data
-        console.log(res)
         totalPages.value = res.info.totalPages
       } else {
         const res = await getCharacterByName(query, page.value, itemsPerPage.value)
@@ -39,8 +41,20 @@ export const useCharacterStore = defineStore('character', () => {
       }
     } catch (error) {
       console.error('Error fetching characters:', error)
+      isError.value = true
     } finally {
       loading.value = false
+    }
+  }
+
+  const fetchCharacterById = async (id: string): Promise<Character | null> => {
+    isError.value = false
+    try {
+      return await getCharacterById(id)
+    } catch (error) {
+      console.error('Error fetching character by ID:', error)
+      isError.value = true
+      return null
     }
   }
 
@@ -51,10 +65,12 @@ export const useCharacterStore = defineStore('character', () => {
   return {
     search,
     loading,
+    isError,
     results,
     page,
     totalPages,
     searchCharacters,
     goToPage,
+    fetchCharacterById,
   }
 })
