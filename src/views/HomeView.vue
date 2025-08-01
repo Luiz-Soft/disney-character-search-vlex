@@ -31,13 +31,18 @@ import Pagination from '@/components/Pagination.vue'
 import LoadingSpinner from '@/components/LoadingSpinner.vue'
 import { useCharacterStore } from '@/stores/characterStore'
 import { storeToRefs } from 'pinia'
-import { useRouter } from 'vue-router'
+import { useRouter, type Router } from 'vue-router'
 
 const characterStore = useCharacterStore()
-const { results: characters, loading, isError } = storeToRefs(characterStore)
+const {
+  results: characters,
+  loading,
+  isError,
+} = storeToRefs(characterStore)
 
-const router = useRouter()
-const goToDetails = (id: number) => {
+const router: Router = useRouter()
+
+const goToDetails = (id: number): void => {
   router.push({ name: 'CharacterDetails', params: { id } })
 }
 </script>
