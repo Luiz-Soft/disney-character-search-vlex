@@ -1,15 +1,28 @@
 <template>
   <div class="character-card">
-    <img :src="imageUrl" :alt="name" class="character-card__image" />
+    <div v-if="!imageUrl || hasError" class="character-card__fallback">🙈</div>
+    <img
+      v-else
+      :src="imageUrl"
+      :alt="name"
+      class="character-card__image"
+      @error="hasError = true"
+      v-show="!hasError"
+    />
+
     <h2 class="character-card__name">{{ name }}</h2>
   </div>
 </template>
 
 <script lang="ts" setup>
-defineProps<{
+import { ref } from 'vue'
+
+const props = defineProps<{
   name: string
-  imageUrl: string
+  imageUrl?: string
 }>()
+
+const hasError = ref(false)
 </script>
 
 <style lang="scss" scoped>
@@ -21,8 +34,8 @@ defineProps<{
   padding: 1rem;
   text-align: center;
   width: 200px;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
   font-family: 'Comic Sans MS', 'Baloo 2', cursive;
+  transition: transform 0.2s ease;
   cursor: pointer;
 
   &:hover {
@@ -30,13 +43,19 @@ defineProps<{
     box-shadow: 6px 6px 0 #ff69b4;
   }
 
-  &__image {
+  &__image,
+  &__fallback {
     width: 100%;
     height: 200px;
-    object-fit: cover;
     border-radius: 12px;
     border: 2px solid #ffeb3b;
     margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    object-fit: cover;
+    font-size: 3rem;
+    background-color: #fff;
   }
 
   &__name {
