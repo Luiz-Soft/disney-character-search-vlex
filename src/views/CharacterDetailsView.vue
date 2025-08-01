@@ -1,5 +1,9 @@
 <template>
-  <div class="character-details" v-if="character">
+  <div v-if="hasError" class="character-details__error" @click="fetchCharacter">
+    {{ $t('characterDetails.errorRetry') }}
+  </div>
+
+  <div class="character-details" v-else-if="character">
     <h1 class="character-details__title">{{ character.data.name }}</h1>
 
     <img
@@ -71,7 +75,6 @@
   </div>
 </template>
 
-
 <script lang="ts" setup>
 import { ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
@@ -80,15 +83,22 @@ import { type Character, getCharacterById } from '@/services/charactersService'
 const route = useRoute()
 const character = ref<Character | null>(null)
 const imageError = ref(false)
+const hasError = ref(false)
 
-onMounted(async () => {
+const fetchCharacter = async () => {
   const id = String(route.params.id)
+  hasError.value = false
+  character.value = null
+
   try {
     character.value = await getCharacterById(id)
   } catch (err) {
     console.error('Error loading character:', err)
+    hasError.value = true
   }
-})
+}
+
+onMounted(fetchCharacter)
 </script>
 
 <style lang="scss" scoped>
@@ -154,11 +164,17 @@ onMounted(async () => {
     }
   }
 
-  &__loading {
+  &__loading,
+  &__error {
     text-align: center;
     padding: 4rem;
     font-size: 1.5rem;
     color: #ff69b4;
+    cursor: pointer;
+  }
+
+  &__error:hover {
+    text-decoration: underline;
   }
 }
 </style>
