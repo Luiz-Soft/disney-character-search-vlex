@@ -31,3 +31,8 @@ export const getCharacterByName = async (name: string, page = 1, pageSize = 9): 
   const response = await api.get(`/character?name=${name}&page=${page}&pageSize=${pageSize}`)
   return response.data
 }
+
+export const getCharacterById = async (id: string): Promise<Character> => {
+  const response = await api.get(`/character/${id}`)
+  return response.data
+}

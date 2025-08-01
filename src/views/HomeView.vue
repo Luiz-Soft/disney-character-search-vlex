@@ -15,6 +15,7 @@
           :key="character._id"
           :name="character.name"
           :image-url="character.imageUrl"
+          @click="goToDetails(character._id)"
         />
       </div>
       <Pagination />
@@ -27,11 +28,16 @@ import CharacterCard from '@/components/CharacterCard.vue'
 import Pagination from '@/components/Pagination.vue'
 import { useCharacterStore } from '@/stores/characterStore'
 import { storeToRefs } from 'pinia'
+import { useRouter } from 'vue-router'
 
 const characterStore = useCharacterStore()
 const { results: characters, loading } = storeToRefs(characterStore)
-</script>
 
+const router = useRouter()
+const goToDetails = (id: number) => {
+  router.push({ name: 'CharacterDetails', params: { id } })
+}
+</script>
 
 
 <style lang="scss" scoped>
