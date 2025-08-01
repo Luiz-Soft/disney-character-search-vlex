@@ -1,8 +1,14 @@
 <template>
   <div class="pagination">
-    <button @click="prevPage" :disabled="page === 1">⬅ Prev</button>
-    <span>Page {{ page }} of {{ totalPages }}</span>
-    <button @click="nextPage" :disabled="page === totalPages">Next ➡</button>
+    <button @click="prevPage" :disabled="page === 1">
+      {{ $t('paginationPrev') }}
+    </button>
+    <span>
+      {{ $t('paginationPageInfo', { page, totalPages }) }}
+    </span>
+    <button @click="nextPage" :disabled="page === totalPages">
+      {{ $t('paginationNext') }}
+    </button>
   </div>
 </template>
 

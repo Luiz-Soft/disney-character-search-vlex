@@ -1,5 +1,8 @@
 {
   "title": "Disney Explorer",
   "searchPlaceholder": "Search characters...",
-  "emptyContent":"No content to display 😢"
+  "emptyContent":"No content to display 😢",
+  "paginationPrev": "⬅ Prev",
+  "paginationPageInfo": "Page {page} of {totalPages}",
+  "paginationNext": "Next ➡"
 }
